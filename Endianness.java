@@ -4,22 +4,17 @@ public class Endianness {
 
   public static int bigEndianValue (Byte[] mem) {
     // TODO
-    int bigEndian = 0;
-    bigEndian+=mem[0]*1000000;
-    bigEndian+=mem[1]*10000;
-    bigEndian+=mem[2]*100;
-    bigEndian+=mem[3];
-    return bigEndian;
+    int i = ((mem[0] & 0xff) << 8*3) | ((mem[1] & 0xff) << 8*2) |
+	    ((mem[2] & 0xff) << 8) | ((mem[3] & 0xff));
+
+    return i;
   }
   
   public static int littleEndianValue (Byte[] mem) {
     // TODO
-    int littleEndian = 0;
-    littleEndian+=mem[3]*1000000;
-    littleEndian+=mem[2]*10000;
-    littleEndian+=mem[1]*100;
-    littleEndian+=mem[0];
-    return littleEndian;
+    int i = ((mem[3] & 0xff) << 8*3) | ((mem[2] & 0xff) << 8*2) |
+	    ((mem[1] & 0xff) << 8) | ((mem[0] & 0xff));
+    return i;
   }
   
   public static void main (String[] args) {
