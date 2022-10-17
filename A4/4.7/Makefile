@@ -1,5 +1,5 @@
 CFLAGS += -std=gnu11 -g
-EXES    = namelist
+EXES    = BinaryTree
 
 all:  $(EXES)
 clean:
