@@ -99,7 +99,7 @@ int main (int argc, char* argv[]) {
   if (root) {
     printf("In Order:\n");
     printInOrder (root);
-    printf("Path to %d:\n", 0);  // TODO: replace 0 with expression that gets value of lastNodeInserted
+    printf("Path to %d:\n", lastNodeInserted->value);  // TODO: replace 0 with expression that gets value of lastNodeInserted
     printPath(lastNodeInserted);
   }
 }
