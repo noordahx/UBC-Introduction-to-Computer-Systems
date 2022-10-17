@@ -7,6 +7,10 @@
  */
 struct Node {
   // TODO
+  int value;
+  struct Node* parent;
+  struct Node* left;
+  struct Node* right;
 };
 
 /**
@@ -14,14 +18,35 @@ struct Node {
  */
 struct Node* create (int value) {
   // TODO
-  return NULL;
+  struct  Node* this = malloc(sizeof(*this));
+  this-> value = value;
+  this-> parent = NULL;
+  this-> left = NULL;
+  this-> right = NULL;
+  return this;
 }
+
 
 /**
  * Insert the node n into the binary tree rooted by toNode.
  */
 void insert (struct Node* toNode, struct Node* n) {
   // TODO
+    if (n->value <= toNode->value) {
+      if (toNode->left == NULL) {
+        toNode->left = n;
+        n->parent = toNode;
+      } else {
+        insert(toNode->left, n);
+      }
+    } else {
+      if (toNode->right == NULL) {
+        toNode->right = n;
+        n->parent = toNode;
+      } else {
+        insert(toNode->right, n);
+      }
+    }
 }
 
 /**
@@ -29,6 +54,12 @@ void insert (struct Node* toNode, struct Node* n) {
  */
 void printInOrder (struct Node* node) {
   // TODO
+  if (node->left != NULL)
+    printInOrder(node->left);
+  printf("%d\n", node->value);
+  if (node->right != NULL) {
+    printInOrder(node->right);
+  }
 }
 
 /**
@@ -37,6 +68,10 @@ void printInOrder (struct Node* node) {
  */
 void printPath (struct Node* node) {
   // TODO
+  if (node->parent != NULL) {
+    printPath(node->parent);
+  }
+  printf("%s: %d\n", node->parent == NULL ? "from root" : node->parent->left == node? "left to" : "right to", node->value);
 }
 
 /**
@@ -45,6 +80,10 @@ void printPath (struct Node* node) {
  */
 int main (int argc, char* argv[]) {
   struct Node* root = 0;
+  /*struct Node* root = create(100);
+  insert(root, create(150));
+  insert(root, create(50));
+  printInOrder(root);*/
   // read values from command line and add them to the tree
   struct Node* lastNodeInserted = NULL;
   for (int i=1; i<argc; i++) {
