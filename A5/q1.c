@@ -29,7 +29,7 @@ int    i, v0, v1, v2, v3;
 
 void q1() {
   // TODO
-  v0 = a->x[i];
+  v0  = a->x[i];
   v1 = a->b.y[i];
   v2 = a->b.a->x[i];
   a = a->b.a;

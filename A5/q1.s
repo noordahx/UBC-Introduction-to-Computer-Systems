@@ -6,7 +6,7 @@ S1:
 ld    $i, r0            # r0 = &i
 ld    (r0), r0          # r0 = i
 ld    $a, r1            # r1 = &a
-ld    (r1), r1          # r1 = &a->x
+ld    (r1), r1          # r1 = a.x
 ld    (r1), r1          # r1 = a->x
 ld    (r1, r0, 4), r2   # r2 = a->x[i]
 ld    $v0, r3           # r3 = &v0
@@ -19,41 +19,41 @@ ld    $i, r0            # r0 = &i
 ld    (r0), r0          # r0 = i
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-inca  r1                # r1 = a->b.y[0]
+inca  r1                # r1 = a.b
 ld    (r1, r0, 4), r2   # r2 = a->b.y[i]
 ld    $v1, r3           # r3 = $r1
 st    r2, (r3)          # v1 = a->b.y[i]
-# v1 = a.b[i];
+# v1 = a->b.y[i];
 ## C statement 3
 S3:
 ld    $i, r0            # r0 = &i
 ld    (r0), r0          # r0 = i
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-ld    20(r1), r1        # r1 = a->b.a
-ld    (r1), r1          # r1 = a->b.a->x[0]
-ld    (r1, r0, 4), r2   # r2 = a->b.a->x[i]
+ld    20(r1), r1        # r1 = a->b->a
+ld    (r1), r1          # r1 = a->b->a.x
+ld    (r1, r0, 4), r2   # r2 = a->b->a->x[i]
 ld    $v2, r3           # r3 = &v2
-st    r2, (r3)          # v2 = a->b.a->x[i]
-# v2 = a->b.a->x[i]
+st    r2, (r3)          # v2 = a->b->a->x[i]
+# v2 = a->b->a->x[i]
 ## C statement 4
 S4:
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-st    r1, 20(r1)        # a = a->b.a;
-# a = a->b.a;
+st    r1, 20(r1)        # a = a->b->a;
+# a = a->b->a;
 ## C statement 5
 S5:
 ld    $i, r0            # r0 = &i
 ld    (r0), r0          # r0 = r0
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-ld    20(r1), r1        # r1 = a->b.a;
-inca  r1                # r1 = a->b.a.b
-ld    (r1, r0, 4), r2   # r2 = a->b.a->b.y[i]
+ld    20(r1), r1        # r1 = a->b->a;
+inca  r1                # r1 = a->b->a.b.y[0]
+ld    (r1, r0, 4), r2   # r2 = a->b->a.b.y[i]
 ld    $v3, r3           # r3 = &v3
-st    r2, (r3)          # v3 = a->b.a->b.y[i]
-# v3 = a->b.a.b.y[i]
+st    r2, (r3)          # v3 = a->b->a.b.y[i]
+# v3 = a->b->a.b.y[i]
 
 halt
 
