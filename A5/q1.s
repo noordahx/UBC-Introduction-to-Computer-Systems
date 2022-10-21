@@ -50,9 +50,9 @@ ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
 ld    20(r1), r1        # r1 = a->b.a;
 inca  r1                # r1 = a->b.a.b
-ld    (r1, r0, 4), r2   # r2 = a->b.a.b.y[i]
+ld    (r1, r0, 4), r2   # r2 = a->b.a->b.y[i]
 ld    $v3, r3           # r3 = &v3
-st    r2, (r3)          # v3 = a->b.a.b.y[i]
+st    r2, (r3)          # v3 = a->b.a->b.y[i]
 # v3 = a->b.a.b.y[i]
 
 halt
