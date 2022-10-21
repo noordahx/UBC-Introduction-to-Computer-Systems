@@ -40,20 +40,20 @@ st    r2, (r3)          # v2 = a->b.a->x[i]
 S4:
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-st    r1, 20(r1)        # a = a->b.y[3];
-# a = a->b.y[3];
+st    r1, 20(r1)        # a = a->b.a;
+# a = a->b.a;
 ## C statement 5
 S5:
 ld    $i, r0            # r0 = &i
 ld    (r0), r0          # r0 = r0
 ld    $a, r1            # r1 = &a
 ld    (r1), r1          # r1 = a
-ld    20(r1), r1        # r1 = a->b.y[3];
-inca  r1                # r1 = a->b.a.x
-ld    (r1, r0, 4), r2   # r2 = a->b.a->x[i]
+ld    20(r1), r1        # r1 = a->b.a;
+inca  r1                # r1 = a->b.a.b
+ld    (r1, r0, 4), r2   # r2 = a->b.a.b.y[i]
 ld    $v3, r3           # r3 = &v3
-st    r2, (r3)          # v3 = a->b.a->x[i]
-# v3 = a->b.a->x[i]
+st    r2, (r3)          # v3 = a->b.a.b.y[i]
+# v3 = a->b.a.b.y[i]
 
 halt
 

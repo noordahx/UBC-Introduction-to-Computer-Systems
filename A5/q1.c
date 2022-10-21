@@ -32,8 +32,8 @@ void q1() {
   v0 = a->x[i];
   v1 = a->b.y[i];
   v2 = a->b.a->x[i];
-  a = &a->b.y[3];
-  v3 = a->b.a->x[i];
+  a = a->b.a;
+  v3 = a->b.a.b.y[i]
 }
 
 ////////////
