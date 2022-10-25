@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "element.h"
-
+#include "refcount.h"
 /* See the header file for the descriptions of each function. */
 struct element {
   int num;
@@ -13,7 +13,7 @@ struct element {
  * Postcondition: the created element has its own copy of the string.
  */
 struct element *element_new(int num, char *value) {
-  struct element *e = malloc(sizeof(*e));
+  struct element *e = rc_malloc(sizeof(*e));
   if(e == NULL) {
     /* out of memory? */
     return NULL;
@@ -26,7 +26,7 @@ struct element *element_new(int num, char *value) {
 /** Delete an element, freeing the memory associated with it. */
 void element_delete(struct element *e) {
   free(e->value);
-  free(e);
+  rc_free_ref(e);
 }
 
 /** Get the stored number from an element.

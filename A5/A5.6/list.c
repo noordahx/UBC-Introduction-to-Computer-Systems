@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
-
+#include "refcount.h"
 struct list {
   struct list_node *head;
   struct list_node *tail;
@@ -17,7 +17,7 @@ struct list_node {
  * Create new list
  */
 struct list *list_new() {
-  struct list *l = malloc(sizeof(*l));
+  struct list *l = rc_malloc(sizeof(*l));
   l->head = l->tail = NULL;
   return l;
 }
@@ -30,7 +30,7 @@ void list_delete(struct list *l) {
     next = n->next;
     list_delete_element(l, n);
   }
-  free(l);
+  rc_free_ref(l);
 }
 
 /**
@@ -41,15 +41,19 @@ void list_delete(struct list *l) {
 struct list_node *list_add_element(struct list *l, struct element *e) {
   struct list_node *n = malloc(sizeof(*n));
   n->elem = e;
+  rc_keep_ref(e);
   n->prev = n->next = NULL;
 
   if(l->head == NULL) {
     l->head = n;
+    rc_keep_ref(n);
   } else {
     l->tail->next = n;
+    rc_keep_ref(n);
     n->prev       = l->tail;
   }
   l->tail = n;
+  rc_keep_ref(n);
 
   return n;
 }
@@ -58,19 +62,26 @@ struct list_node *list_add_element(struct list *l, struct element *e) {
  * Remove element from list and free it
  */
 void list_delete_element(struct list *l, struct list_node *n) {
-  if (n == l->head)
+  if (n == l->head){
     l->head = n->next;
+    rc_free_ref(n);
+  }
   else
     n->prev->next = n->next;
 
-  if (n == l->tail)
+  if (n == l->tail){
     l->tail = n->prev;
-  else
+    rc_free_ref(n);
+  }
+  else{
     n->next->prev = n->prev;
-
+    //rc_free_ref(n);
+  }
   n->next = n->prev = NULL;
   element_delete(n->elem);
-  //free(n);
+  rc_free_ref(n->elem);
+  rc_free_ref(n);
+  
 }
 
 /**
