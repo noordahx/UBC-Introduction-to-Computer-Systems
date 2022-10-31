@@ -159,7 +159,11 @@ public class CPU extends AbstractSM213CPU {
       case 0x8: // br a .................. 8-pp  (a = pc + pp * 2)
         // TODO
         int pcVal = pc.get();
-        int jumpVal = (insOp1.get() * 16 + insOp2.getUnsigned()) * 2;
+        int jumpVal;
+        if (insOp1.get() > 7)
+            jumpVal = 2 * (insOp1.get() * (-16) + insOp2.getUnsigned());
+        else
+            jumpVal = 2 * (insOp1.get() * (16) + insOp2.getUnsigned());
         pc.set(pcVal + jumpVal);
         break;
 
@@ -167,7 +171,10 @@ public class CPU extends AbstractSM213CPU {
         // TODO
         if (reg.get(insOp0.get()) == 0) {
             pcVal = pc.get();
-            jumpVal = (insOp1.get() * 16 + insOp2.getUnsigned()) * 2;
+            if (insOp1.get() > 7)
+                jumpVal = 2 * (insOp1.get() * (-16) + insOp2.getUnsigned());
+            else
+                jumpVal = 2 * (insOp1.get() * (16) + insOp2.getUnsigned());
             pc.set(pcVal + jumpVal);
         }
         break;
@@ -176,7 +183,10 @@ public class CPU extends AbstractSM213CPU {
         // TODO
         if (reg.get(insOp0.get()) > 0) {
             pcVal = pc.get();
-            jumpVal = (insOp1.get() * 16 + insOp2.getUnsigned()) * 2;
+            if (insOp1.get() > 7)
+                jumpVal = 2 * (insOp1.get() * (-16) + insOp2.getUnsigned());
+            else
+                jumpVal = 2 * (insOp1.get() * (16) + insOp2.getUnsigned());
             pc.set(pcVal + jumpVal);
         }
         break;
