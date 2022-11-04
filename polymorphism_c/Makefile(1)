@@ -1,0 +1,13 @@
+TARGETS = basic override vars complete complete_pong
+OBJS = basic.o override.o vars.o complete.o complete_pong.o
+
+all: $(TARGETS)
+
+basic: basic.o
+override: override.o
+
+clean:
+	rm -f $(TARGETS) $(OBJS)
+
+tidy:
+	rm -f $(OBJS)
