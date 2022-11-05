@@ -20,7 +20,7 @@ int main() {
     }
 
     for (int i = 0; i < 8; i++) {
-        printf("%d ",x[i]);
+        printf("%d\n",x[i]);
     }
 
     for (int i = 0; i < 8; i++) {
