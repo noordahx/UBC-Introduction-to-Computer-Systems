@@ -24,6 +24,6 @@ int main() {
     }
 
     for (int i = 0; i < 8; i++) {
-        printf("%d ",y[i]);
+        printf("%d\n",y[i]);
     }
 }
