@@ -10,13 +10,13 @@ f:
     deca r5              # allocate 4 bytes in the stack
     ld   $0, r0          # r0 = 0
     ld   4(r5), r1       # r1 = 4(r5) = load second from top element of the stack
-    ld   $0x80000000, r2 # r2 = 80000000
+    ld   $0x80000000, r2 # r2 = 0x80000000
 f_loop:
     beq  r1, f_end       # if (r1 == 0) GOTO f_end
     mov  r1, r3          # r3 = r1
     and  r2, r3          # r3 = r2 & r3
-    beq  r3, f_if1       # if (r3 == 0) GOTO f_if
-    inc  r0              # r0++
+    beq  r3, f_if1       # if (r3 == 0) GOTO f_if1 *check if number if positive
+    inc  r0              # r0++ = add 1 to return value if number is negative
 f_if1:
     shl  $1, r1          # r1 = r1 * 2
     br   f_loop          # GOTO f_loop
