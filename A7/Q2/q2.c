@@ -15,8 +15,10 @@ int f(int val) {\
 }
 
 int main() {
-    for (int i = 8; i != 0; i--) {
-        y[i] = f(x[i]);    
+    int i = 8;
+    while (i != 0) {
+        i--;
+        y[i] = f(x[i]);
     }
 
     for (int i = 0; i < 8; i++) {

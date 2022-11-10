@@ -5,7 +5,7 @@
   sys $0      # system call: read
 
   mov r0, r1  # r1 = size = read return value
-  ld $buf, r0 # r0 = buf
+  ld $buf, r0 # r0 = buf  
   sys $2      # system call: exec
   halt
 
