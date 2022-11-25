@@ -39,7 +39,7 @@ int main (int argc, char** argv) {
   }
 
   // Initialize
-  uthread_init (1);
+  uthread_init (4);
   disk_start (interrupt_service_routine);
   pending_read_queue = queue_create();
   pending_reads = num_blocks;
