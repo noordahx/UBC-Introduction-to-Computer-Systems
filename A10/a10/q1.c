@@ -10,19 +10,19 @@ void randomStall() {
 }
 
 void* p0(void* v) {
-  randomStall();
+  //randomStall();
   printf("zero\n");
   return NULL;
 }
 
 void* p1(void* v) {
-  randomStall();
+  //randomStall();
   printf("one\n");
   return NULL;
 }
 
 void* p2(void* v) {
-  randomStall();
+  //randomStall();
   printf("two\n");
   return NULL;
   }
@@ -32,7 +32,11 @@ int main(int arg, char** arv) {
   t0 = uthread_create(p0, NULL);
   t1 = uthread_create(p1, NULL);
   t2 = uthread_create(p2, NULL);
-  randomStall();
+  //randomStall();
+  uthread_join(t0, NULL);
+  uthread_join(t1, NULL);
+  uthread_join(t2, NULL);
+  //uthread_join(t0, NULL);
   printf("three\n");
   printf("------\n");
 }
