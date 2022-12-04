@@ -498,8 +498,3 @@ one
 two
 three
 ------
-q
-q
-q
-q
-q
