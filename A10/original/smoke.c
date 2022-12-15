@@ -34,6 +34,11 @@ struct Agent* createAgent() {
   return agent;
 }
 
+//
+// TODO
+// You will probably need to add some procedures and struct etc.
+//
+
 /**
  * You might find these declarations helpful.
  *   Note that Resource enum had values 1, 2 and 4 so you can combine resources;
@@ -48,105 +53,6 @@ int num_active_threads = 0;
 
 int signal_count [5];  // # of times resource signalled
 int smoke_count  [5];  // # of times smoker with resource smoked
-
-struct SmokerPool {
-  struct Agent* agent;
-  int match;
-  int paper;
-  int tobacco;
-};
-
-struct Smoker {
-  struct SmokerPool* pool;
-  int type;
-};
-
-struct Smoker* makeSmoker(int type, struct SmokerPool* pool){
-  struct Smoker* s = malloc(sizeof(struct Smoker));
-  s->pool = pool;
-  s->type = type;
-  return s;
-}
-
-struct SmokerPool* makeSmokerPool(struct Agent* agent){
-  struct SmokerPool* smokerpool = malloc(sizeof (struct SmokerPool));
-  smokerpool->tobacco = 0;
-  smokerpool->paper = 0;
-  smokerpool->match = 0;
-  smokerpool->agent = agent;
-  return smokerpool;
-}
-
-
-void smokerMATCH(struct Agent* dealer, struct SmokerPool* sesh, struct Smoker* s) {
-  uthread_cond_wait(dealer->match);
-  if (sesh->paper <= 0 || sesh->tobacco <= 0) {
-    sesh->match++;
-  } else {
-    sesh->paper--;
-    sesh->tobacco--;
-    smoke_count[s->type]++;
-    uthread_cond_signal(dealer->smoke);
-  }
-}
-
-void smokerPAPER(struct Agent* dealer, struct SmokerPool* sesh, struct Smoker* s) {
-  uthread_cond_wait(dealer->paper);
-  if (sesh->match <= 0 || sesh->tobacco <= 0) {
-    sesh->paper++;
-  } else {
-    sesh->match--;
-    sesh->tobacco--;
-    smoke_count[s->type]++;
-    uthread_cond_signal(dealer->smoke);
-  }
-}
-
-void smokerTOBACCO(struct Agent* dealer, struct SmokerPool* sesh, struct Smoker* s) {
-  uthread_cond_wait(dealer->tobacco);
-  if (sesh->match <= 0 || sesh->paper <= 0) {
-    sesh->tobacco++;
-  } else {
-    sesh->match--;
-    sesh->paper--;
-    smoke_count[s->type]++;
-    uthread_cond_signal(dealer->smoke);
-  }
-}
-
-void signalDealer(struct Agent* dealer, struct SmokerPool* sesh) {
-  if (sesh->paper > 0 && sesh->match > 0) {
-      uthread_cond_signal(dealer->tobacco);
-    } else if (sesh->paper > 0 && sesh->tobacco > 0) {
-      uthread_cond_signal(dealer->match);
-    } else if (sesh->tobacco > 0 && sesh->match > 0) {
-      uthread_cond_signal(dealer->paper);
-    }
-}
-
-void* smoker (void* blazer) {
-  struct Smoker* s = blazer;
-  struct SmokerPool* sesh = s->pool;
-  struct Agent* dealer = sesh->agent;
-
-  uthread_mutex_lock(dealer->mutex);
-
-  while ("CPSC 213 gives me anxety" == "CPSC 213 gives me anxety") {
-
-    if (s->type == MATCH) {
-      smokerMATCH(dealer, sesh, s);
-    } else if (s->type == PAPER){
-      smokerPAPER(dealer, sesh, s);
-    } else if (s->type == TOBACCO){
-      smokerTOBACCO(dealer, sesh, s);
-    }
-
-    signalDealer(dealer, sesh);
-    
-  }
-  uthread_mutex_unlock(dealer->mutex);
-}
-
 
 /**
  * This is the agent procedure.  It is complete and you shouldn't change it in
@@ -224,16 +130,10 @@ int main (int argc, char** argv) {
   
   struct Agent* a = createAgent();
   uthread_t agent_thread;
-  struct SmokerPool* smokerpool = makeSmokerPool(a);
 
   uthread_init(5);
   
-  uthread_t match = uthread_create(smoker, makeSmoker(MATCH, smokerpool));
-  num_active_threads++;
-  uthread_t paper = uthread_create(smoker, makeSmoker(PAPER, smokerpool));
-  num_active_threads++;
-  uthread_t tobacco = uthread_create(smoker, makeSmoker(TOBACCO, smokerpool));
-  num_active_threads++;
+  // TODO
 
   agent_thread = uthread_create(agent, a);
   uthread_join(agent_thread, NULL);
